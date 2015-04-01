@@ -127,11 +127,13 @@ void TeleTextWindow::tick() {
 
   ts.tv_sec  = 0;
   //ts.tv_nsec = ( 1.0 / (float)10.0) * 1000;
-  ts.tv_nsec = 1000 * 1000;
+  ts.tv_nsec = 500 * 1000000;
 
   //glBindTexture( GL_TEXTURE_2D, m_font_texture);
 //  glPushMatrix();
   //glLoadIdentity();
+
+  glLoadIdentity();
 
   glBegin(GL_QUADS);
 
