@@ -24,6 +24,8 @@ int Application::main() {
   }
 
   window.move_to( 2, 2 );
+  window.set_color( 4 );
+  window.set_bg( 14 );
   window.puts( "Yeah, BABY!" );
 
   while( window.is_active() ) {

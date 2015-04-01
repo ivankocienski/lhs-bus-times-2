@@ -1,16 +1,14 @@
 
 #pragma once
 
+#include <SDL/SDL.h>
 #include <vector>
-
-#include <GLFW/glfw3.h>
-#include "font.hh"
 
 class TeleTextWindow {
 private:
 
   typedef struct _S_CELL {
-    unsigned char letter;
+    unsigned char code;
     unsigned char foreground;
     unsigned char background;
     int flags;
@@ -18,17 +16,15 @@ private:
 
   std::vector<T_CELL> m_cells;
 
-  GLFWwindow* m_main_window = NULL;
-
-//  Font m_font;
+  SDL_Surface *m_font;
+  SDL_Surface *m_screen;
+  int  m_cursor_pos;
+  int  m_cursor_col;
+  int  m_cursor_bg;
+  bool m_is_running;
   
-  GLuint m_font_texture;
-  float m_char_width;
-  float m_char_height;
-
-  bool load_font_texture();
-
-  int m_cursor_pos;
+  void render_cell( int, int, int, int, int );
+  void render_cells();
   
 public:
 
@@ -47,7 +43,6 @@ public:
   void set_color( int );
   void set_bg( int );
   void draw_chr( int );
-
 
   void draw_font( int, int, char* );
 };
