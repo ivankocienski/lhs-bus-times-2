@@ -12,19 +12,30 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic -g")
 find_package (SDL REQUIRED)
 find_package (SDL_image REQUIRED )
 
+find_package (CURL REQUIRED)
+
+#ADD_SUBDIRECTORY(third-party/curlcpp)
+#INCLUDE_DIRECTORIES(${CURLCPP_SOURCE_DIR}/include)
+
 # source files. sure, there's a better way of doing this
 set (SRC
   src/application.cc
   src/main.cc
   src/teletext-window.cc
+  src/data-fetcher.cc
+  src/bus-time-fetcher.cc
 
+  src/third-party/json-cpp/jsoncpp.cpp
 )
 
 
 link_libraries(
   ${SDL_LIBRARY}
   ${SDL_IMAGE_LIBRARIES}
+  ${CURL_LIBRARY}
 )
+
+INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src/third-party/json-cpp)
 
 add_executable(bus-times-2 ${SRC} )
 
