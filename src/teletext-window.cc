@@ -19,23 +19,14 @@ static const int s_term_width  = 40;
 static const int s_term_height = 25;
 
 static SDL_Color s_palette[] = {
-  {   0,   0,   0 },
-  {   0,   0, 127 },
-  {   0, 127,   0 },
-  {   0, 127, 127 },
-  { 127,   0,   0 },
-  { 127,   0, 127 },
-  { 127, 127,   0 },
-  { 127, 127, 127 },
-  {  64,  64,  64 },
-  {  64,  64, 255 },
-  {  64, 255,  64 },
-  {  64, 255, 255 },
-  { 255,  64,  64 },
-  { 255,  64, 255 },
-  { 255, 255,  64 },
-  { 255, 255, 255 },
-  {  16,  16,  16 }
+  {   0,   0,   0 }, // 0 - black
+  { 255,   0,   0 }, // 1 - red
+  {   0, 240,   0 }, // 2 - green
+  { 255, 230,   0 }, // 3 - yellow
+  {   0,   0, 255 }, // 4 - blue
+  { 255,   0, 255 }, // 5 - magenta
+  {   0, 255, 255 }, // 6 - cyan
+  { 255, 255, 255 }, // 7 - white
 };
 
 using namespace std;
@@ -45,7 +36,7 @@ TeleTextWindow::TeleTextWindow() {
   m_cursor_col = 15;
   m_cursor_bg  = 0;
   m_is_running = false;
-  m_screen = NULL;
+  m_screen     = NULL;
 
   m_cells.resize( s_term_width * s_term_height );
 }
@@ -178,4 +169,8 @@ void TeleTextWindow::puts( char *s ) {
     m_cursor_pos++;
     if(m_cursor_pos >= (s_term_width * s_term_height)) break;
   }
+}
+
+void TeleTextWindow::puts( const string &s ) {
+  puts( (char *)s.c_str() );
 }

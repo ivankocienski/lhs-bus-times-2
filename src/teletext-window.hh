@@ -3,6 +3,18 @@
 
 #include <SDL/SDL.h>
 #include <vector>
+#include <string>
+
+enum {
+  TC_BLACK,
+  TC_RED,
+  TC_GREEN,
+  TC_YELLOW,
+  TC_BLUE,
+  TC_MAGENTA,
+  TC_CYAN,
+  TC_WHITE
+};
 
 class TeleTextWindow {
 private:
@@ -39,6 +51,7 @@ public:
 
   void move_to( int, int );
   void puts( char* );
+  void puts( const std::string& );
 
   void set_color( int );
   void set_bg( int );

@@ -13,15 +13,17 @@ static const char *s_fetcher_path = "http://countdown.tfl.gov.uk/stopBoard/";
 
 static const char *s_fake_data = "{\"lastUpdated\":\"22:59\",\"filterOut\":[],\"arrivals\":[{\"routeId\":\"48\",\"routeName\":\"48\",\"destination\":\"London Bridge\",\"estimatedWait\":\"4 min\",\"scheduledTime\":\"22:04\",\"isRealTime\":true,\"isCancelled\":false},{\"routeId\":\"55\",\"routeName\":\"55\",\"destination\":\"Oxford Circus\",\"estimatedWait\":\"8 min\",\"scheduledTime\":\"22:08\",\"isRealTime\":true,\"isCancelled\":false},{\"routeId\":\"55\",\"routeName\":\"55\",\"destination\":\"Oxford Circus\",\"estimatedWait\":\"10 min\",\"scheduledTime\":\"22:09\",\"isRealTime\":true,\"isCancelled\":false},{\"routeId\":\"48\",\"routeName\":\"48\",\"destination\":\"London Bridge\",\"estimatedWait\":\"21 min\",\"scheduledTime\":\"22:20\",\"isRealTime\":true,\"isCancelled\":false},{\"routeId\":\"55\",\"routeName\":\"55\",\"destination\":\"Oxford Circus\",\"estimatedWait\":\"23 min\",\"scheduledTime\":\"22:23\",\"isRealTime\":true,\"isCancelled\":false}],\"serviceDisruptions\":{\"infoMessages\":[\"Routes 10 25 55 73 98 390 N8 N55 N73 N98 N207 are subject to diversion until Monday 20 April due to road works on Oxford Street eastbound between Newman Street and Rathbone Place. \",\"Central Line trains are not stopping at Tottenham Court Road. Use Holborn or Oxford Circus stations instead.\"],\"importantMessages\":[],\"criticalMessages\":[]}}";
 
-BusTimeFetcher::BusTimeFetcher( int id ) {
+BusTimeFetcher::BusTimeFetcher( int id, const char* n ) {
 
   stringstream ss;
   ss << s_fetcher_path << id;
 
   m_fetch_url = ss.str();
+  m_name = n;
 
   cout << "BusTimeFetcher::BusTimeFetcher()" << endl;
   cout << "  url=" << m_fetch_url << endl;
+  cout << " name=" << m_name << endl;
 }
 
 bool BusTimeFetcher::fetch() {
@@ -104,7 +106,10 @@ int BusTimeFetcher::count() {
   return m_bus_times.size();
 }
 
-BusTimeFetcher::T_BUS_TIME & BusTimeFetcher::operator[]( int i ) {
+const BusTimeFetcher::T_BUS_TIME & BusTimeFetcher::operator[]( int i ) {
   return m_bus_times[i];
 }
 
+const string & BusTimeFetcher::name() {
+  return m_name;
+}
