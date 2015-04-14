@@ -74,7 +74,7 @@ void TeleTextWindow::tick() {
   render_cells();
 
   SDL_Flip( m_screen );
-  SDL_Delay( 20 );
+  SDL_Delay( 250 );
 
   while( SDL_PollEvent(&event) ) {
     switch( event.type ) {

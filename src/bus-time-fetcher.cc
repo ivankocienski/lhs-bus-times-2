@@ -11,8 +11,6 @@ using namespace std;
 
 static const char *s_fetcher_path = "http://countdown.tfl.gov.uk/stopBoard/";
 
-static const char *s_fake_data = "{\"lastUpdated\":\"22:59\",\"filterOut\":[],\"arrivals\":[{\"routeId\":\"48\",\"routeName\":\"48\",\"destination\":\"London Bridge\",\"estimatedWait\":\"4 min\",\"scheduledTime\":\"22:04\",\"isRealTime\":true,\"isCancelled\":false},{\"routeId\":\"55\",\"routeName\":\"55\",\"destination\":\"Oxford Circus\",\"estimatedWait\":\"8 min\",\"scheduledTime\":\"22:08\",\"isRealTime\":true,\"isCancelled\":false},{\"routeId\":\"55\",\"routeName\":\"55\",\"destination\":\"Oxford Circus\",\"estimatedWait\":\"10 min\",\"scheduledTime\":\"22:09\",\"isRealTime\":true,\"isCancelled\":false},{\"routeId\":\"48\",\"routeName\":\"48\",\"destination\":\"London Bridge\",\"estimatedWait\":\"21 min\",\"scheduledTime\":\"22:20\",\"isRealTime\":true,\"isCancelled\":false},{\"routeId\":\"55\",\"routeName\":\"55\",\"destination\":\"Oxford Circus\",\"estimatedWait\":\"23 min\",\"scheduledTime\":\"22:23\",\"isRealTime\":true,\"isCancelled\":false}],\"serviceDisruptions\":{\"infoMessages\":[\"Routes 10 25 55 73 98 390 N8 N55 N73 N98 N207 are subject to diversion until Monday 20 April due to road works on Oxford Street eastbound between Newman Street and Rathbone Place. \",\"Central Line trains are not stopping at Tottenham Court Road. Use Holborn or Oxford Circus stations instead.\"],\"importantMessages\":[],\"criticalMessages\":[]}}";
-
 BusTimeFetcher::BusTimeFetcher( int id, const char* n ) {
 
   stringstream ss;
@@ -21,52 +19,50 @@ BusTimeFetcher::BusTimeFetcher( int id, const char* n ) {
   m_fetch_url = ss.str();
   m_name = n;
 
-  cout << "BusTimeFetcher::BusTimeFetcher()" << endl;
-  cout << "  url=" << m_fetch_url << endl;
-  cout << " name=" << m_name << endl;
+//  cout << "BusTimeFetcher::BusTimeFetcher()" << endl;
+//  cout << "  url=" << m_fetch_url << endl;
+//  cout << " name=" << m_name << endl;
 }
 
 bool BusTimeFetcher::fetch() {
 
-  //DataFetcher df;
+  vector<T_BUS_TIME> new_times;
+
+  DataFetcher df;
   
-  //if( !df.fetch( m_fetch_url.c_str() )) {
-  //  return false;
- // }
+  if( !df.fetch( m_fetch_url.c_str() )) {
+    return false;
+  }
 
   //cout << df.result() << endl;
 
   Json::Reader json_reader;
 
   Json::Value root;
-  if( !json_reader.parse( s_fake_data, root )) 
+  if( !json_reader.parse( df.result(), root )) 
     return false;
 
   // here be data ...
   if( root.isObject() ) {
-
-    cout << "root is object" << endl;
+//    cout << "root is object" << endl;
 
     if( root.isMember( "arrivals" )) {
-
-      cout << "root has arrivals" << endl;
+//      cout << "root has arrivals" << endl;
 
       Json::Value &arrivals = root["arrivals"];
 
       if( arrivals.isArray()) {
-
-        cout << "arrivals is an array" << endl;
+//        cout << "arrivals is an array" << endl;
 
         int count = arrivals.size();
-        cout << "arrivals has " << count << " elements" << endl;
+//        cout << "arrivals has " << count << " elements" << endl;
 
         for( int i = 0; i < count; i++ ) {
 
           Json::Value &arrival = arrivals[i];
 
           if( arrival.isObject()  ) {
-
-            cout << "arrival[" << i << "] is an object" << endl;
+//            cout << "arrival[" << i << "] is an object" << endl;
 
             T_BUS_TIME bus_time;
             int values = 0;
@@ -86,9 +82,9 @@ bool BusTimeFetcher::fetch() {
               values++;
             }
 
-            cout << "  has " << values << " values" << endl;
+//            cout << "  has " << values << " values" << endl;
             if( values == 3 ) 
-              m_bus_times.push_back(bus_time);
+              new_times.push_back(bus_time);
           }
         }
 
@@ -96,8 +92,7 @@ bool BusTimeFetcher::fetch() {
     }
   }
 
-
-
+  m_bus_times.assign( new_times.begin(), new_times.end() );
 
   return true;
 }
