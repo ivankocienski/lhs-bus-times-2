@@ -9,7 +9,9 @@
 #include "teletext-window.hh"
 
 static const char *s_window_title = "Teletext Window";
-static const char *s_teletext_font_file = "data/font.png";
+//static const char *s_teletext_font_file = "data/font.png";
+
+#include "font.png.cc"
 
 static const int s_xres = 800;
 static const int s_yres = 600;
@@ -50,7 +52,10 @@ bool TeleTextWindow::open( bool fullscreen ) {
   m_screen = SDL_SetVideoMode( s_xres, s_yres, 8, SDL_SWSURFACE); 
   if( !m_screen ) return false;
 
-  m_font = IMG_Load( s_teletext_font_file );
+  SDL_RWops *mem = SDL_RWFromMem( (void*)font_src, 1310 ); // MAGIC!
+
+  //m_font = IMG_Load( s_teletext_font_file );
+  m_font = IMG_Load_RW( mem, 1 );
   if( !m_font ) return false;
 
   SDL_LockSurface( m_font );
