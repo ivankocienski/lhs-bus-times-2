@@ -101,6 +101,16 @@ void Application::print_banner( TeleTextWindow &window ) {
   window.set_bg( TC_YELLOW );
   window.move_to( 0, 0 );
   window.puts( buffer );
+
+  // 10
+  window.set_color( TC_WHITE );
+  window.move_to( 0, 24 );
+
+  //                                        ----------
+  window.set_bg( TC_RED );    window.puts( "   News   ");
+  window.set_bg( TC_YELLOW ); window.puts( "  Weather ");
+  window.set_bg( TC_GREEN );  window.puts( "  Sports  ");
+  window.set_bg( TC_BLUE );   window.puts( "   IRC    ");
 }
 
 int Application::main() {
